@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Serving is running on ${HOST}:${PORT}`);
   db.mongoose
     .connect(db.connectionString, {
@@ -30,9 +31,11 @@ app.listen(PORT, () => {
       useUnifiedTopology: true
     })
     .then(() => {
+      // eslint-disable-next-line no-console
       console.log('Connected to MongoDB');
     })
     .catch((err) => {
+      // eslint-disable-next-line no-console
       console.error(`Connection error ${err}`);
       process.exit();
     });
