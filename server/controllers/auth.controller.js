@@ -5,37 +5,36 @@ const User = db.user;
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 
-const signup = (req, res) => {
-  const user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
-  });
+const register = async (req, res) => {
+  try {
+    const user = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 8)
+    });
 
-  user.save((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
-
+    await user.save();
     res.send({ message: 'User was registered successfully!' });
-  });
+  } catch (err) {
+    console.error(`Error ${err}`); // eslint-disable-line no-console
+    res.status(500).send({ message: err });
+  }
 };
 
-const signin = (req, res) => {
-  User.findOne({
-    username: req.body.username
-  }).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
+const login = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      username: req.body.username
+    });
 
     if (!user) {
-      return res.status(404).send({ message: 'User Not found.' });
+      return res.status(404).send({ message: 'User not found' });
     }
 
-    var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.password,
+      user.password
+    );
 
     if (!passwordIsValid) {
       return res.status(401).send({
@@ -44,7 +43,7 @@ const signin = (req, res) => {
       });
     }
 
-    var token = jwt.sign({ id: user.id }, config.secret, {
+    const token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400
     });
 
@@ -54,12 +53,13 @@ const signin = (req, res) => {
       email: user.email,
       accessToken: token
     });
-  });
+  } catch (err) {
+    console.error(`Error: ${err}`); //eslint-disable-line no-console
+    res.status(500).send(err);
+  }
 };
 
-const auth = {
-  signup,
-  signin
+module.exports = {
+  register,
+  login
 };
-
-module.export = auth;
