@@ -1,7 +1,7 @@
 const db = require('../db');
 const User = db.User;
 
-checkDuplicateUsernameOrEmail = (req, res, next) => {
+const checkDuplicateUsernameOrEmail = (req, res, next) => {
   User.findOne({
     username: req.body.username
   }).exec((err, user) => {
