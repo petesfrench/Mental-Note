@@ -1,5 +1,8 @@
 const router = require('express').Router();
-const { register, login } = require('../controllers/auth.controller');
+const {
+  register,
+  login
+} = require('../controllers/authentication/auth.controller');
 const {
   checkDuplicateEmail,
   checkDuplicateUsername
