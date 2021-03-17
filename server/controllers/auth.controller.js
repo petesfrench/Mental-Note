@@ -61,4 +61,5 @@ const auth = {
   signup,
   signin
 };
+
 module.export = auth;
