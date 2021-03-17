@@ -1,5 +1,5 @@
 const db = require('../db');
-const User = db.User;
+const User = db.user;
 
 const checkDuplicateUsername = async (req, res, next) => {
   try {

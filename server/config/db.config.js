@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 module.exports = {
-  HOST: process.env.MONGO_DB_HOST || 'localhost',
-  PORT: process.env.MONGO_DB_PORT || 27017,
+  HOST: process.env.MONGO_DB_HOST,
+  PORT: process.env.MONGO_DB_PORT,
   DB: process.env.MONGO_DB_DATABASE
 };

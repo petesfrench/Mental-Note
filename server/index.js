@@ -2,13 +2,15 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
+const router = require('./router');
 
 const db = require('./db');
 
-const PORT = process.env.SEVRER_PORT || 5000;
-const HOST = process.env.SERVER_HOST || 'localhost';
+require('dotenv').config();
+const PORT = process.env.SEVRER_PORT;
+const HOST = process.env.SERVER_HOSTNAME;
 
-var corsOptions = {
+const corsOptions = {
   orgigin: `http://${HOST}:${PORT}`
 };
 
@@ -18,9 +20,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to my app!' });
-});
+app.use(router);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
